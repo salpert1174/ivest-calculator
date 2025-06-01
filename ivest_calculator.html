@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I.VEST Trust Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    input, select { margin: 5px; padding: 5px; }
+    #results { margin-top: 20px; white-space: pre-line; }
+  </style>
+</head>
+<body>
+  <h1>I.VEST Trust Calculator</h1>
+  <label>Investment Amount ($1000 increments): <input type="number" id="investment" value="1000" step="1000"></label><br>
+  <label>Estimated Return (%): <input type="number" id="return" value="25"></label><br>
+  <label>Number of Periods: <input type="number" id="periods" value="5"></label><br>
+  <label>Return Interval: 
+    <select id="interval">
+      <option value="weekly">Weekly</option>
+    </select>
+  </label><br>
+  <label>Compounding: 
+    <select id="compounding">
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select>
+  </label><br>
+  <button onclick="calculate()">Calculate</button>
+
+  <div id="results"></div>
+
+  <script>
+    function calculate() {
+      const principal = parseFloat(document.getElementById('investment').value);
+      const rate = parseFloat(document.getElementById('return').value) / 100;
+      const periods = parseInt(document.getElementById('periods').value);
+      const compounding = document.getElementById('compounding').value === 'yes';
+
+      let balance = principal;
+      let results = 'Results (weekly):\n';
+
+      for (let i = 1; i <= periods; i++) {
+        if (compounding) {
+          balance *= (1 + rate);
+        } else {
+          balance += principal * rate;
+        }
+        results += `Period ${i}: Balance = $${balance.toFixed(2)}\n`;
+      }
+
+      document.getElementById('results').innerText = results;
+    }
+  </script>
+</body>
+</html>
